@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,34 +26,82 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { TextInput } from 'react-native-gesture-handler';
+import { color } from 'react-native-reanimated';
 
 
-function HomeScreen({navigation}){
+function HomeScreen({navigation, route}){
+  useEffect(()=>{
+    if(route.params?.post){
 
+    }
+  },[route.params?.post]);
   return (
+
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor:'#BDD1DC' }}>
+       <Text style={{ margin: 10 }}>Post: {route.params?.post}</Text>
       <View style={{ flexDirection:'row', borderColor:'gray',borderBottomWidth:1,borderRightWidth:1,borderRadius:10,alignItems:'center' , justifyContent:'center', backgroundColor:'white', width: 200, height: 100}}>
         <Text style={{fontSize:20 , fontWeight:'bold'}}>hello</Text>
       </View>
       <Button
         title="Go to Details... "
-        onPress={() => navigation.navigate('Details')}
+        onPress={() => navigation.navigate('Details',{
+          itemId: 83,
+          otherParam: 'helllllloooo'
+        })}
       />
+      <Button title="Go Create Post.."
+        onPress = {()=> navigation.navigate('CreatePost', {
+
+        })}
+      >
+    <View style={{}}>
+      <Button
+        title="Create post"
+        onPress={() => navigation.navigate('CreatePost')}
+      />
+     
+    </View>
+      </Button>
     </View>
   );
 }
 
-function DetailScreen({navigation}){
+function DetailScreen({route,navigation}){
+  const itemId = route.params.itemId;
   return (
     <View>
-      <Text>Detail Screen</Text>
-      <Button title="go to details again" onPress={()=>navigation.push('Details')}></Button>
+      <Text>Detail Screen {JSON.stringify(itemId)} {route.params.otherParam}</Text>
+      <Button title="go to details again" onPress={()=>navigation.push('Details',{
+        itemId: Math.floor(Math.random()*100)
+      })}></Button>
       <Button title="go to back" onPress={()=>navigation.goBack()}></Button>
       <Button title="go to first screen" onPress={()=>navigation.popToTop()}></Button>
     </View>
   );
 }
+function CreatePostScreen({navigation, route}){
+  const [postText, setPostText] = useState("");
+  return(
+    <View>
+      <Button title="Done" onPress={()=>{
+        navigation.navigate("Home",{ post:postText})
+      }}></Button>
+      <TextInput
+        multiline
+        placeholder = "크리에이트 포스트.."
+        style= {{ height : 200, margin:10, padding:10 ,fontSize:20,backgroundColor:"white"}}
+        value = {postText}
+        onChangeText= {setPostText}
+      >
 
+      </TextInput>
+      <Text style={{margin:10 , textAlign:"center",color:"red"}}>
+        {postText}
+      </Text>
+    </View>
+  );
+}
 const Stack = createStackNavigator();
 function App(){
   return(
@@ -63,7 +111,8 @@ function App(){
           <Stack.Screen name="Home" component={HomeScreen}  options={{title: 'Overview'}}>
          
           </Stack.Screen>
-          <Stack.Screen name="Details" component={DetailScreen} />
+          <Stack.Screen name="Details" component={DetailScreen} initialParams={{itemId:33}} />
+          <Stack.Screen name="CreatePost" component={CreatePostScreen} ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
  
