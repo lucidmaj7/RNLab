@@ -54,15 +54,13 @@ function HomeScreen({navigation, route}){
         onPress = {()=> navigation.navigate('CreatePost', {
 
         })}
-      >
-    <View style={{}}>
-      <Button
-        title="Create post"
-        onPress={() => navigation.navigate('CreatePost')}
+      > </Button>
+        <Button
+        title="Set rTitle"
+        onPress={() => navigation.setOptions({title:"set Title!~~"})}
       />
+
      
-    </View>
-      </Button>
     </View>
   );
 }
@@ -107,8 +105,16 @@ function App(){
   return(
  
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen}  options={{title: 'Overview'}}>
+        <Stack.Navigator initialRouteName="Home" screenOptions={{headerStyle: {
+            backgroundColor: '#f4511e',
+          }, 
+          headerTintColor:'yellow',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color:"yellow",
+            fontSize:30
+          },}}>
+          <Stack.Screen name="Home" component={HomeScreen}  options={{title: 'Overview', headerRight:()=>(<Button title="헤더버튼입니다." onPress={()=>alert("hello")} ></Button>)}}>
          
           </Stack.Screen>
           <Stack.Screen name="Details" component={DetailScreen} initialParams={{itemId:33}} />
