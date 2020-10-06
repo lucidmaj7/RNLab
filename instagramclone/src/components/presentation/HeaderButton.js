@@ -4,9 +4,11 @@ import Icon from 'react-native-vector-icons/dist/Ionicons';
 
 
 const HeaderButton = (props)=>{
+    let horizontalPadding  = props?.horizontalPadding;
+    horizontalPadding = horizontalPadding === undefined ? 15: horizontalPadding;
     return (
         <TouchableOpacity onPress={props.onPress}
-            style = {{paddingHorizontal:15}}
+            style = {{paddingHorizontal:horizontalPadding }}
             >
             <Icon name= {props.iconName} size={props.iconSize}/>
         </TouchableOpacity>
