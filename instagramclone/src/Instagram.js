@@ -8,7 +8,7 @@ import HomeScreen from './components/screens/HomeScreen';
 import ActivityScreen from './components/screens/ActivityScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/dist/Ionicons';
-
+import COLORS from './color'
 const Tab = createBottomTabNavigator();
 
 const TabScreenList = [
@@ -21,27 +21,27 @@ const TabScreenList = [
    {
       name : "Search",
       component : HomeScreen,
-      inactiveIcon: 'search',
+      inactiveIcon: 'search-outline',
       activeIcon : 'search',
 
    },
    {
       name : "Post",
       component : HomeScreen,
-      inactiveIcon: 'planet-outline',
-      activeIcon : 'planet-outline',
+      inactiveIcon: 'add-circle-outline',
+      activeIcon : 'add-circle',
    },
    {
       name : "Activity",
       component : ActivityScreen,
-      inactiveIcon: 'heart',
+      inactiveIcon: 'heart-outline',
       activeIcon : 'heart',
    },
    {
       name : "Profile",
       component : ActivityScreen,
-      inactiveIcon: 'barcode',
-      activeIcon : 'barcode',
+      inactiveIcon: 'person-circle-outline',
+      activeIcon : 'person-circle',
    },
 ];
 
@@ -56,9 +56,10 @@ const Instagram = () =>{
                   name = {screen.name}
                   component = {screen.component}
                   options = {{
-
+                  
+                     tabBarLabel : () => null,
                      tabBarIcon: ({ focused })=>{
-                     return( <Icon name={ focused ? screen.activeIcon : screen.inactiveIcon } size={24} color={'black'} />)
+                     return( <Icon name={ focused ? screen.activeIcon : screen.inactiveIcon } size={28} color={'black'} />)
                   }}}
                   />
                ))
