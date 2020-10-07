@@ -56,8 +56,8 @@ const style = StyleSheet.create({
         flexDirection: "column",
         justifyContent:"center",
         alignItems:"center",
-        marginLeft:15,
-        marginRight: 15,
+        marginLeft:8,
+        marginRight: 8,
     },
     profileImageContainer:{
         backgroundColor:"red",

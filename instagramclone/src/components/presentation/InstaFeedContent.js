@@ -10,8 +10,8 @@ const style = StyleSheet.create({
         
     },
     instaFeedContentHeader:{
-        paddingLeft:15,
-        paddingRight:15,
+        paddingLeft:10,
+        paddingRight:10,
         height:64,
         borderBottomWidth:1,
         borderBottomColor: COLORS.BorderGray,
@@ -55,6 +55,24 @@ const style = StyleSheet.create({
     feedBackLeftButtonsContainer:{
         flexDirection:"row",
 
+    },
+    likeContainer:{
+        marginHorizontal:10,
+        flex:1,
+        flexDirection:'row',
+        alignItems:"center",
+    },
+    likeProfileImage:{
+        marginRight:10,
+        width:24,
+        height:24,
+        borderRadius:12,
+    },
+    contentMsgContainer:{
+        flex:1,
+        flexDirection:"row",
+        marginHorizontal:10,
+        marginTop:8,
     }
 });
 const FeedBack = () =>{
@@ -69,20 +87,66 @@ const FeedBack = () =>{
         </View>
     );
 }
-const InstaFeedContent =(props) =>{
-    return(
-    <View style={style.instaFeedContent}>
+const FeedHeader = (props) =>{
+    return (
         <View style={style.instaFeedContentHeader}>
-            <Image style={style.headerProfileImage} source={require('../../../assets/profiles/profile_1.png')} />
+            <Image style={style.headerProfileImage} source={props.profileImagePath} />
             <View style={style.headerProfileAccoutTextContainer}>
-                 <Text style={style.headerProfileAccoutText}>jerry_jerry</Text>
+                <Text style={style.headerProfileAccoutText}>{props.account}</Text>
             </View>
             <HeaderButton iconName="ellipsis-horizontal" iconSize={22} horizontalPadding={8}></HeaderButton>
         </View>
+    );
+}
+const Likes = (props) => {
+    return (
+        <View style={style.likeContainer} >
+            <Image style={style.likeProfileImage} source={require('../../../assets/profiles/profile_1.png')}></Image>
+            <Text>
+            <Text style={{
+                fontWeight:"700",
+            }}>{`jerry` }</Text>
+            <Text>{`님 외` }</Text>
+            <Text style={{
+                fontWeight:"700",
+            }}>{`127명`}</Text>
+            <Text>{`이 좋아합니다.` }</Text>
+            </Text>
+        </View>
+    );
+}
+const ContentMsg = (props) =>{
+    return(
+        <View style={style.contentMsgContainer}>
+            <Text>
+                <Text style={{
+                    fontSize:12,
+                    fontWeight:'600',
+                 
+                }}>{`jerry_jerry `}</Text>
+                <Text
+                 style={{
+                    fontSize:12,
+                    fontWeight:'300',
+                 
+                }}
+                >{`오늘 진짜 재미없는 하루가 지나갔네요. 리엑트네이티브로 인스타그램클론 코딩하기..어렵습니다.`}</Text>
+            </Text>
+        </View>
+    );
+}
+
+
+const InstaFeedContent =(props) =>{
+    return(
+    <View style={style.instaFeedContent}>
+        <FeedHeader account={`jerry_jerry`} profileImagePath={require('../../../assets/profiles/profile_1.png')}></FeedHeader>
         <View style={style.feedImageContainer}>
             <Image style={style.feedImage} source={require('../../../assets/feeds/feed1.png')} />
         </View>
-        <FeedBack></FeedBack>
+        <FeedBack/>
+        <Likes/>
+        <ContentMsg/>
     </View>
     );
 }
