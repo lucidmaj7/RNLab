@@ -120,13 +120,13 @@ const ContentMsg = (props) =>{
         <View style={style.contentMsgContainer}>
             <Text>
                 <Text style={{
-                    fontSize:12,
+                    fontSize:14,
                     fontWeight:'600',
                  
                 }}>{`jerry_jerry `}</Text>
                 <Text
                  style={{
-                    fontSize:12,
+                    fontSize:14,
                     fontWeight:'300',
                  
                 }}
@@ -147,6 +147,9 @@ const InstaFeedContent =(props) =>{
         <FeedBack/>
         <Likes/>
         <ContentMsg/>
+        <Text>
+            8
+        </Text>
     </View>
     );
 }
