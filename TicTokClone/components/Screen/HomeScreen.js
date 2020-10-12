@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Icon from 'react-native-vector-icons/dist/Ionicons';
+
 /*
 
 <FlatList
@@ -77,7 +79,16 @@ const Item = ({title, bgImage}) =>(
         </View>
         <View style={{flex:2}}>
             <View style={{flex:1 , flexDirection:"row"}}>
-                <View style={{flex:4,  }}>
+                <View style={{flex:4,  
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.23,
+                    shadowRadius: 2.62,
+                    elevation: 4,
+                }}>
                     <View style={{flex :1, flexDirection:"column-reverse", paddingLeft:15, paddingRight:40}}>
                          <Text style={{color:"white",fontSize:18, marginBottom:40}}>
                             <Text style={{fontWeight:"600"}}>{`@helloWorld \n`}</Text>
@@ -87,12 +98,37 @@ const Item = ({title, bgImage}) =>(
                     </View>
 
                 </View>
-                <View style={{flex:1, flexDirection:"column-reverse"}}>
-                    <View style={{backgroundColor:"red", width:80,height:80,marginVertical:5,opacity:0.4}}></View>
-                    <View style={{backgroundColor:"red", width:80,height:80,marginVertical:5,opacity:0.4}}></View>
-                    <View style={{backgroundColor:"red", width:80,height:80,marginVertical:5,opacity:0.4}}></View>
-                    <View style={{backgroundColor:"red", width:80,height:80,marginVertical:5,opacity:0.4}}></View>
-                    <View style={{backgroundColor:"red", width:80,height:80,marginVertical:5,opacity:0.4}}></View>
+                <View style={{flex:1, flexDirection:"column-reverse" ,marginBottom:30}}>
+                <View style={{alignItems:"center", width:80,height:80,marginVertical:5,
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+                elevation: 4,
+            }}>
+                         <Icon name="heart" size={60} color={'white'}></Icon>
+                         <Text style={{color:"white", fontWeight:"bold", fontSize:16}}>332</Text>
+                    </View>
+                    <View style={{alignItems:"center", width:80,height:80,marginVertical:5,}}>
+                         <Icon name="share-social" size={60} color={'white'}></Icon>
+                         <Text style={{color:"white", fontWeight:"bold", fontSize:16}}>공유</Text>
+                    </View>
+                    <View style={{alignItems:"center", width:80,height:80,marginVertical:5,}}>
+                         <Icon name="chatbubble-ellipses" size={60} color={'white'}></Icon>
+                         <Text style={{color:"white", fontWeight:"bold", fontSize:16}}>332</Text>
+                    </View>
+                    <View style={{alignItems:"center", width:80,height:80,marginVertical:5,}}>
+                         <Icon name="heart" size={60} color={'white'}></Icon>
+                         <Text style={{color:"white", fontWeight:"bold", fontSize:16}}>332</Text>
+                    </View>
+                    <View style={{alignItems:"center", width:80,height:80,marginVertical:5,}}>
+                         <Icon name="heart" size={60} color={'white'}></Icon>
+                         <Text style={{color:"white", fontWeight:"bold", fontSize:16}}>332</Text>
+                    </View>
+                  
                 </View>
             </View>
          
@@ -107,17 +143,30 @@ const HEIGHT = Dimensions.get("window").height-90;
 
 const HomeScreen = () =>{
     return (
-     
+            <View style={{flex:1}}>
+              
             <FlatList 
-                   
                     snapToInterval={HEIGHT}
-                    
                     decelerationRate={'fast'}
                     data = {DATA}
                     renderItem = { ({item})=> <Item title={item.title} bgImage={item.image}></Item>}
                     keyExtractor = {item =>item.id}
             />
- 
+            <View style={{ justifyContent:"center", position: 'absolute', flexDirection:"row",top:80,flex:1,width:WIDTH,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.23,
+                    shadowRadius: 2.62,
+                    elevation: 4,
+
+        }}>
+                <Text style={{fontSize:20, fontWeight:"900", color:"white",}}>팔로우</Text>
+                <Text style={{fontSize:20, fontWeight:"600", color:"white"}}>추천</Text>
+            </View>
+            </View>
 
       
     );
