@@ -10,8 +10,12 @@ const Tab = createBottomTabNavigator();
 const TicTok = () =>{
     return (
     <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator tabBarOptions={{ style: { height:90,backgroundColor:"black", borderColor:"black"}}}>
             <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Search" component={HomeScreen} />
+            <Tab.Screen name="Post" component={HomeScreen} />
+            <Tab.Screen name="DM" component={HomeScreen} />
+            <Tab.Screen name="Profile" component={HomeScreen} />
         </Tab.Navigator>
     </NavigationContainer>
     );
