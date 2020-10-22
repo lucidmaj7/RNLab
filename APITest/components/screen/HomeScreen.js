@@ -9,17 +9,19 @@ import {
     View,
     ActivityIndicator,
     Text,
-    StatusBar,Button
+    StatusBar,Button, Image
   } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
-const Item = ({ title, author,text }) =>(
+const Item = ({ title, author,text,img }) =>(
     <View style={{flex:1 , backgroundColor:"green",marginVertical:10}}> 
         <Text>{`title: ${title}`}</Text>
         <Text>{`author: ${author}`}</Text>
         <Text>{`text: ${text}`}</Text>
+        <Image style={{width:400,height:300}} source={{url : `${img}`}}></Image>
+      
     </View>
 );
 const URL = "http://192.168.111.148:8888/blogs/";
@@ -30,7 +32,7 @@ const HomeScreen = () => {
     const [prevPage, setPrevPage] = useState(null);
     const [curPage, setCurPage] = useState(URL);
     const renderItem = ( {item } ) =>(
-        <Item  title={item.title} author={item.author} text={item.text} />
+        <Item  title={item.title} author={item.author} text={item.text} img={item.img} />
     );
     const refeshData = (url)=>{
         console.log("refeshing..");
@@ -50,7 +52,7 @@ const HomeScreen = () => {
             setData(json.results);
         }).finally(()=>{
             setLoading(false);
-        });
+        }).catch((err)=>{});
     };
     useEffect(()=>{
         refeshData(URL);
