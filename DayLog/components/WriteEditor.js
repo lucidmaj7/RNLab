@@ -8,10 +8,10 @@ function WriteEditor({title, body, onChangeTitle, onChangeBody}) {
     <View style={styles.block}>
       <TextInput
         placeholder="제목을 입력하세요"
-        returnKeyType="next"
-        onChangeTitle={onChangeTitle}
-        value={title}
         style={styles.titleInput}
+        returnKeyType="next"
+        onChangeText={onChangeTitle}
+        value={title}
         onSubmitEditing={() => {
           bodyRef.current.focus();
         }}

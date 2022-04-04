@@ -5,7 +5,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TransparentCircleButton from './TransparentCircleButton';
 
-function WriteHeader() {
+function WriteHeader({onSave}) {
   const navigation = useNavigation();
   const onGoBack = () => {
     navigation.pop();
@@ -25,7 +25,11 @@ function WriteHeader() {
           color="#ef5350"
           hasMarginRight
         />
-        <TransparentCircleButton name="check" color="#009688" />
+        <TransparentCircleButton
+          name="check"
+          color="#009688"
+          onPress={onSave}
+        />
       </View>
     </View>
   );
