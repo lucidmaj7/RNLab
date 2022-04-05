@@ -412,3 +412,187 @@ function WriteScreen() {
 * `PPP`: 날짜
 * `EEE`: 요일
 * `P`: 시간
+
+## Animated 
+* react native에서 애니메이션을 구현할 때 사용하는 객체
+* 특정 값을 컴포넌트 생성시 설정하고, 컴포넌트가 사라질때까지 사용하고 싶은경우 useRef를 사용해 구현할 수 있음.
+  ```js
+  function AnimatedSample() {
+    const animation = useRef(new Animated.Value(1)).current;
+    return (
+      <View>
+        <Animated.View style={[styles.ractangle, {opacity: animation}]} />
+        <Button
+          title="FadeIn!!"
+          onPress={() => {
+            Animated.timing(animation, {
+              toValue: 1, // 변경할 값 (필수)
+              duration: 1000, // 애니메이션 걸리는 시간
+              useNativeDriver: true, // 네이티브 드라이버(필수)
+            }).start();
+          }}
+        />
+        <Button
+          title="FadeOut!!"
+          onPress={() => {
+            Animated.timing(animation, {
+              toValue: 0,
+              useNativeDriver: true,
+            }).start();
+          }}
+        />
+      </View>
+    );
+  }
+  ```
+* useState로 state와 연동한 예
+  ```js
+  function AnimatedSample() {
+    const animation = useRef(new Animated.Value(1)).current;
+    const [hidden, setHidden] = useState(false);
+    useEffect(() => {
+      Animated.timing(animation, {
+        toValue: hidden ? 0 : 1,
+        useNativeDriver: true,
+      }).start();
+    }, [hidden, animation]);
+    return (
+      <View>
+        <Animated.View style={[styles.ractangle, {opacity: animation}]} />
+        <Button
+          title="Toggle!!"
+          onPress={() => {
+            setHidden(!hidden);
+          }}
+        />
+      </View>
+    );
+  }
+  ```
+* 좌우, 상하로 움직이기
+  ㅣleft, top 스타일보다 transform스타일이 성능면에서 좋음
+  ```js
+  function AnimatedSample() {
+  const animation = useRef(new Animated.Value(1)).current;
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: enabled ? 150 : 0,
+      useNativeDriver: true,
+    }).start();
+  }, [enabled, animation]);
+  return (
+      <View>
+        <Animated.View
+          style={[
+            styles.ractangle,
+            {
+              transform: [{translateX: animation, translateY: animation}],
+            },
+          ]}
+        />
+        <Button
+          title="Toggle!!"
+          onPress={() => {
+            setEnabled(!enabled);
+          }}
+        />
+      </View>
+    );
+  }
+  ```
+* interpolate 이용
+  입력값 -> 출력값으로 대체 시켜줌.
+```js
+function AnimatedSample() {
+  const animation = useRef(new Animated.Value(1)).current;
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: enabled ? 1 : 0, // 0~ 1로 상태변경
+      useNativeDriver: true,
+    }).start();
+  }, [enabled, animation]);
+  return (
+    <View>
+      <Animated.View
+        style={[
+          styles.ractangle,
+          {
+            transform: [
+              {
+                translateX: animation.interpolate({
+                  inputRange: [0, 1],  //입력값
+                  outputRange: [0, 150], //실제 출력값
+                }),
+              },
+            ],
+            opacity: animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0],
+            }),
+          },
+        ]}
+      />
+      <Button
+        title="Toggle!!"
+        onPress={() => {
+          setEnabled(!enabled);
+        }}
+      />
+    </View>
+  );
+}
+```
+* spring Animation
+ * 스프링처럼 튀는 효과
+ ```js
+   useEffect(() => {
+    Animated.spring(animation, {
+      toValue: hidden ? 1 : 0,
+      useNativeDriver: true,
+      tension: 45, //강도
+      friction: 5, // 감속
+    }).start();
+  }, [animation, hidden]);
+
+ ```
+
+## 스크롤 내렸을때 버튼 숨기기
+### FlatList OnEndReached, onEndReachedThreshold
+* FlatList OnEndReached, onEndReachedThreshold를 이용하여 스크롤 끝 감지 가능
+  ```js
+  <FlatList
+    onEndReached = {(distanceFromEnd) => {
+      console.log('바닥이다.');
+    }}
+    onEndReachedThresold={0.85} //85%까지 호출 되었을때 onEndReached 호출
+  >
+  ```
+* 보통 무한스크롤 로딩을 구현할때 유용함.
+* 바닥과 멀어지는것은 감지 할 수 없음.
+### onScroll 이벤트 사용
+* onScroll 함수
+  ```js
+  const onScroll = e => {
+    const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
+    console.log({contentSize, layoutMeasurement, contentOffset});
+    const distanceFromBottom =
+      contentSize.height - layoutMeasurement.height - contentOffset.y;
+    if (distanceFromBottom < 72) {
+      console.log('바닥과 가까워졌어요');
+    } else {
+      console.log('바닥과 멀어 졌어요.');
+    }
+  };
+  ```
+  * contentSize.height: FlatList 전체 크기
+  * layoutMeasurement.height: FlatList 실제 크기
+  * contentOffset.y: 스크롤마다 늘어나는 값.(맨위: 0, 맨 아래: contentSize.height-layoutMeasurement.height) 
+* `contentSize.height - layoutMeasurement.height - contentOffset.y` 값이 0에 가까워 진다면 FlatList의 스크롤이 바닥에 가까워 지는 것.
+
+## 예외 처리
+### 항목 갯수가 적어서 스크롤이 필요 없는 경우
+* 안드로이드의 경우 항목이 없는 경우 스크롤이 방지되어 상관없음
+* ios의 경우 스크롤이 필요 없는 상황에서도 스크롤이 됨.
+
