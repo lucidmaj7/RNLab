@@ -1,76 +1,19 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState, useRef, useEffect} from 'react';
 import {v4 as uuidv4} from 'uuid';
+import logsStorage from '../storages/logsStorages';
 const LogContext = createContext();
 
 export function LogContextProvider({children}) {
-  const [logs, setLogs] = useState([
-    {
-      id: uuidv4(),
-      title: 'Log 03',
-      body: 'Log 03',
-      date: new Date().toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 02',
-      body: 'Log 02',
-      date: new Date(Date.now() - 1000 * 60 * 3).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 3',
-      body: 'Log 3',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 4',
-      body: 'Log 4',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 5',
-      body: 'Log 5',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 6',
-      body: 'Log 6',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 7',
-      body: 'Log 7',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 8',
-      body: 'Log 8',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 8).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 9',
-      body: 'Log 9',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 10',
-      body: 'Log 10',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toDateString(),
-    },
-    {
-      id: uuidv4(),
-      title: 'Log 11',
-      body: 'Log 11',
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 11).toDateString(),
-    },
-  ]);
+  const [logs, setLogs] = useState([]);
+  const initialLogsRef = useRef(logs);
+  const onRemove = id => {
+    const nextLogs = logs.filter(log => log.id !== id);
+    setLogs(nextLogs);
+  };
+  const onModify = modified => {
+    const nextLogs = logs.map(log => (log.id === modified.id ? modified : log));
+    setLogs(nextLogs);
+  };
   const onCreate = ({title, body, date}) => {
     const log = {
       id: uuidv4(),
@@ -80,8 +23,29 @@ export function LogContextProvider({children}) {
     };
     setLogs([log, ...logs]);
   };
+
+  useEffect(() => {
+    // useEffect 내에서 async 함수를 만들고 바로 호출
+    // IIFE 패턴
+    (async () => {
+      const savedLogs = await logsStorage.get();
+      if (savedLogs) {
+        initialLogsRef.current = savedLogs;
+        console.log('local storage load~~');
+        setLogs(savedLogs);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (logs === initialLogsRef.current) {
+      return;
+    }
+    console.log('local storage save~');
+    logsStorage.set(logs);
+  }, [logs]);
   return (
-    <LogContext.Provider value={{logs, onCreate}}>
+    <LogContext.Provider value={{logs, onCreate, onModify, onRemove}}>
       {children}
     </LogContext.Provider>
   );

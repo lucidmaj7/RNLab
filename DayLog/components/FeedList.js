@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import FeedListItem from './FeedListItem';
 
-function FeedList({logs, onScrolledToBottom}) {
+function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
   const onScroll = e => {
     const {contentSize, layoutMeasurement, contentOffset} = e.nativeEvent;
     console.log({contentSize, layoutMeasurement, contentOffset});
@@ -22,6 +22,7 @@ function FeedList({logs, onScrolledToBottom}) {
       keyExtractor={log => log.id}
       ItemSeparatorComponent={() => <View style={styles.seperator} />}
       onScroll={onScroll}
+      ListHeaderComponent={ListHeaderComponent}
     />
   );
 }

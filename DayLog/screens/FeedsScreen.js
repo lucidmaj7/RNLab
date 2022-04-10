@@ -12,7 +12,6 @@ function FeedsScreen() {
       setHidden(isBottom);
     }
   };
-  console.log(logs);
   return (
     <View style={style.block}>
       <FeedList logs={logs} onScrolledToBottom={onScrolledToBottom} />
